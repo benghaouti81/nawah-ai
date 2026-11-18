@@ -4,7 +4,7 @@ WORKDIR /app
 # Install native build dependencies for better-sqlite3 fallback compilation and CA certificates
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ ca-certificates && rm -rf /var/lib/apt/lists/*
 
-COPY package.json package-lock.json* bun.lock* ./
+COPY package.json package-lock.json* bun.lock* .npmrc* ./
 RUN npm install && npm cache clean --force
 
 COPY . .
