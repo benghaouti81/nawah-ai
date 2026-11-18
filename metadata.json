@@ -1,0 +1,6 @@
+{
+  "name": "Nawah AI",
+  "description": "Open-source collaborative AI agent gateway and governance portal for engineering teams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

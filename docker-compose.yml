@@ -1,0 +1,34 @@
+services:
+  nawah-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nawah-ai-core
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    environment:
+      PORT: "${PORT:-3000}"
+      NODE_ENV: "production"
+      NAWAH_DATA_DIR: "/app/data"
+      NAWAH_MASTER_KEY: "${NAWAH_MASTER_KEY:-}"
+      NAWAH_BOOTSTRAP_ADMIN_KEY: "${NAWAH_BOOTSTRAP_ADMIN_KEY:-}"
+      NAWAH_BOOTSTRAP_ADMIN_LABEL: "${NAWAH_BOOTSTRAP_ADMIN_LABEL:-Platform Admin}"
+      NAWAH_PROVIDER_TIMEOUT_MS: "${NAWAH_PROVIDER_TIMEOUT_MS:-60000}"
+      NAWAH_PROVIDER_TEST_TIMEOUT_MS: "${NAWAH_PROVIDER_TEST_TIMEOUT_MS:-10000}"
+      APP_URL: "${APP_URL:-http://localhost:3000}"
+    volumes:
+      - nawah_data:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:' + (process.env.PORT || 3000) + '/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\""
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+volumes:
+  nawah_data:
